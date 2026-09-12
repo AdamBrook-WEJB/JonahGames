@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#f6f4ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Jonah’s Games">
-<meta name="description" content="Gentle pastel falling-block and snake games for Jonah. No ads, sound, or distractions.">
+<meta name="description" content="Gentle pastel blocks, snake, two-player football and pattern puzzles for Jonah. No ads, sound, or distractions.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6f4ee'/%3E%3Cpath d='M5 5h10v10H5zm12 0h10v10H17zm0 12h10v10H17z' fill='%2399b5ad'/%3E%3C/svg%3E">
 <title>Jonah’s Games</title>
 <style>
@@ -40,11 +40,24 @@ h1{font-size:25px;letter-spacing:-.8px;margin:0}.eyebrow,.intro,.hint{display:no
 
 
 .pitch-wrap{width:min(100cqw,75cqh);aspect-ratio:3/4;border:7px solid #d7e2d2;border-radius:22px;overflow:hidden;touch-action:none}#pitch{touch-action:none}.football-score{display:flex;gap:22px;font-size:17px}.football-score strong{font-size:25px;margin-left:7px}.football-message{text-align:center;font-size:18px;font-weight:650;margin:3px 0 6px}.football-help{text-align:center;font-size:14px;margin:0 0 10px}.football-buttons{display:flex;justify-content:center;gap:12px}.football-buttons button{min-height:48px;padding:8px 24px}.choose{flex-wrap:wrap;gap:8px}.choose button{padding-left:18px;padding-right:18px}@media(max-width:599px){.choose button{font-size:12px;padding:6px 10px}.football-score{font-size:14px;gap:10px}.football-message{font-size:15px}.football-help{font-size:12px}.football-buttons button{min-height:40px}}
+
+.pattern-space{min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:10px;overflow:auto}.pattern-space h2{font-size:18px;font-weight:600;margin:0 0 10px;text-align:center}.pattern-example{width:min(35%,200px)}.pattern-answer{width:min(65%,380px)}.pattern-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;width:100%}.pattern-cell{aspect-ratio:1;min-height:0;padding:0;border:1px solid #b6c7b8;border-radius:15px;display:flex;align-items:center;justify-content:center;color:#43594f;font-size:clamp(16px,3vw,28px);font-weight:500}.pattern-cell:disabled{opacity:1}.pattern-palette{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0}.pattern-palette button{min-height:70px;border:3px solid transparent}.pattern-palette button[aria-pressed="true"]{border-color:#526e5e}.pattern-palette span{margin-right:8px}.pattern-example .pattern-cell{border-radius:9px;font-size:18px}#pattern-count{font-size:15px}@media(max-height:1000px){.pattern-space{flex-direction:row;align-items:center;justify-content:center;gap:24px}.pattern-example{width:30%}.pattern-answer{width:58%}}@media(max-width:599px){.pattern-space{gap:15px}.pattern-palette button{min-height:58px;padding:6px;font-size:14px}.pattern-palette span{margin-right:3px}.pattern-space h2{font-size:15px}.pattern-grid{gap:5px}.pattern-cell{border-radius:10px}.pattern-example .pattern-cell{font-size:13px}.choose{flex-wrap:nowrap;padding-left:10px;padding-right:10px;gap:5px}.choose button{padding:6px 7px;font-size:11px}#pattern-count{font-size:13px}}
+
+/* Equal direction buttons, with Snake's pause separated at the top. */
+.header-actions{display:flex;align-items:center;gap:14px}#snake-pause-slot button{min-height:48px;padding:8px 18px;background:transparent;font-size:15px}
+.snake-mode .controls{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:88px;gap:12px}
+.snake-mode #left,.snake-mode #turn,.snake-mode #down,.snake-mode #right{grid-row:1;min-height:0;height:100%;padding:10px 4px;display:flex;flex-direction:column;gap:7px;border-radius:22px}
+.snake-mode #left{grid-column:1}.snake-mode #turn{grid-column:2}.snake-mode #down{grid-column:3}.snake-mode #right{grid-column:4}
+.snake-mode .control svg{width:30px;height:30px;margin:0}.snake-mode .control span{font-size:16px}.snake-mode #original-pause-slot:empty{display:none}
+@media(max-width:599px){.snake-mode .controls{grid-template-rows:74px;gap:8px}.snake-mode .control span{font-size:13px}.snake-mode .control svg{width:26px;height:26px}.header-actions{gap:7px}#snake-pause-slot button{min-height:44px;padding:7px 10px;font-size:14px}.snake-mode .brand{font-size:18px;gap:6px}.snake-mode .mark{width:20px;height:20px}.snake-mode header{gap:6px}.snake-mode .session{min-width:94px;padding:5px 8px}}
+
+.football-modes{display:flex;justify-content:center;gap:10px;margin:0 0 9px}.football-modes button{min-height:44px;padding:8px 18px;font-size:15px;background:transparent}.football-modes button[aria-pressed="true"]{background:#dce7dd;border-color:#91a997}
+@media(max-width:599px){.football-modes button{min-height:40px;padding:6px 14px;font-size:14px}}
 </style>
 </head>
 <body>
-<header><div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>Jonah’s Games</div><div class="session" id="session" data-stage="0" aria-label="Session time"><small id="time-label">Time playing</small><strong id="time">00:00</strong></div></header>
-<nav class="choose" aria-label="Choose a game"><button id="choose-blocks" aria-pressed="true">Little Blocks</button><button id="choose-snake" aria-pressed="false">Little Snake</button><button id="choose-football" aria-pressed="false">Football · 2 players</button></nav>
+<header><div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>Jonah’s Games</div><div class="header-actions"><div id="snake-pause-slot" hidden></div><div class="session" id="session" data-stage="0" aria-label="Session time"><small id="time-label">Time playing</small><strong id="time">00:00</strong></div></div></header>
+<nav class="choose" aria-label="Choose a game"><button id="choose-blocks" aria-pressed="true">Little Blocks</button><button id="choose-snake" aria-pressed="false">Little Snake</button><button id="choose-football" aria-pressed="false">Football</button><button id="choose-patterns" aria-pressed="false">Patterns</button></nav>
 <div id="break-note" class="break-note" role="status" hidden>20 minutes of play. Time for a little break, Jonah.</div>
 <main id="original-game">
 <div class="board-slot"><div class="board-wrap">
@@ -61,7 +74,7 @@ h1{font-size:25px;letter-spacing:-.8px;margin:0}.eyebrow,.intro,.hint{display:no
 <button class="control" id="right" aria-label="Move block right" disabled><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 16h20m-9-9 9 9-9 9"/></svg><span>Right</span></button>
 <button class="control down" id="down" aria-label="Move block down one space" disabled><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 5v22M7 18l9 9 9-9"/></svg><span>A little down</span></button>
 </div>
-<div class="bottom"><button id="pause" disabled>Pause</button></div>
+<div class="bottom" id="original-pause-slot"><button id="pause" disabled>Pause</button></div>
 <div class="status" id="status" aria-live="polite"></div>
 <p class="hint">Keyboard: ← → to move · ↑ to turn · ↓ to lower<br>Space to pause</p>
 </section>
@@ -70,8 +83,12 @@ h1{font-size:25px;letter-spacing:-.8px;margin:0}.eyebrow,.intro,.hint{display:no
 <section class="panel"><div class="panel-top"><h1>Little Football</h1><div class="football-score"><span>Sky <strong id="sky-score">0</strong></span><span>Rose <strong id="rose-score">0</strong></span></div></div>
 <div class="football-message" id="football-message" aria-live="polite">Sky’s turn · Shoot towards the top goal</div>
 <p class="football-help">Drag your player back, then let go to flick. First to 3 goals.</p>
-<div class="football-buttons"><button id="football-pause">Pause</button><button id="football-reset">New match</button></div>
+<div class="football-modes" aria-label="Football opponent"><button id="football-together" aria-pressed="true">Play together</button><button id="football-computer" aria-pressed="false">Play computer</button></div><div class="football-buttons"><button id="football-pause">Pause</button><button id="football-reset">New match</button></div>
 </section></main>
+<main id="patterns-game" hidden aria-label="Pattern puzzle">
+<div class="pattern-space"><div class="pattern-example"><h2>Copy this</h2><div id="pattern-target" class="pattern-grid" aria-label="Pattern to copy"></div></div><div class="pattern-answer"><h2>Your turn</h2><div id="pattern-answer" class="pattern-grid" aria-label="Your pattern"></div></div></div>
+<section class="panel"><div class="panel-top"><h1>Little Patterns</h1><span id="pattern-count">0 patterns made</span></div><p id="pattern-message" class="football-message" aria-live="polite">Pick a colour, then tap a square.</p><div id="pattern-palette" class="pattern-palette" aria-label="Choose a colour"></div><div class="football-buttons"><button id="pattern-clear">Clear squares</button><button id="pattern-next" hidden>Another pattern</button></div></section>
+</main>
 <footer>Slow and steady. No hurry.</footer>
 <script>
 (()=>{'use strict';
@@ -103,7 +120,7 @@ function pause(){if(state!=='playing')return;state='paused';show('A little break
 function resume(){state='playing';elapsed=0;last=performance.now();$('overlay').hidden=true;controls();$('pause').focus({preventScroll:true});}
 $('play').addEventListener('click',()=>state==='paused'?resume():start());$('pause').addEventListener('click',pause);
 $('left').addEventListener('click',()=>move(-1));$('right').addEventListener('click',()=>move(1));$('turn').addEventListener('click',rotate);$('down').addEventListener('click',()=>{lower();if(game==='blocks')elapsed=0;});
-document.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key))return;if(e.key===' '&&state!=='playing'&&state!=='paused')return;e.preventDefault();if(e.key===' '){if(e.repeat)return;state==='playing'?pause():resume();return;}if(state!=='playing')return;if(e.key==='ArrowLeft')move(-1);if(e.key==='ArrowRight')move(1);if(e.key==='ArrowUp'&&!e.repeat)rotate();if(e.key==='ArrowDown'){lower();if(game==='blocks')elapsed=0;}});
+document.addEventListener('keydown',e=>{if($('original-game').hidden)return;if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key))return;if(e.key===' '&&state!=='playing'&&state!=='paused')return;e.preventDefault();if(e.key===' '){if(e.repeat)return;state==='playing'?pause():resume();return;}if(state!=='playing')return;if(e.key==='ArrowLeft')move(-1);if(e.key==='ArrowRight')move(1);if(e.key==='ArrowUp'&&!e.repeat)rotate();if(e.key==='ArrowDown'){lower();if(game==='blocks')elapsed=0;}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});window.addEventListener('blur',pause);
 
 const turnIcon=$('turn').querySelector('svg').innerHTML;
@@ -117,7 +134,7 @@ function drawSnake(){const size=400/SNAKE_SIZE;ctx.clearRect(0,0,400,400);ctx.st
 
 
 document.addEventListener('arcade-play',beginSession);
-for(const name of ['blocks','snake','football'])$('choose-'+name).addEventListener('click',()=>{const external=name==='football';if(external)pause();$('original-game').hidden=external;$('football-game').hidden=!external;for(const n of ['blocks','snake','football'])$('choose-'+n).setAttribute('aria-pressed',n===name);document.dispatchEvent(new CustomEvent('arcade-mode',{detail:name}));});
+for(const name of ['blocks','snake','football','patterns'])$('choose-'+name).addEventListener('click',()=>{const external=name==='football'||name==='patterns';$('snake-pause-slot').hidden=name!=='snake';$(name==='snake'?'snake-pause-slot':'original-pause-slot').append($('pause'));if(external)pause();$('original-game').hidden=external;$('football-game').hidden=name!=='football';$('patterns-game').hidden=name!=='patterns';for(const n of ['blocks','snake','football','patterns'])$('choose-'+n).setAttribute('aria-pressed',n===name);document.dispatchEvent(new CustomEvent('arcade-mode',{detail:name}));});
 
 function tick(t){if(state==='playing'){elapsed+=Math.min(t-last,100);if(elapsed>=(game==='snake'?550:fallTime)){elapsed=0;if(game==='snake')stepSnake();else lower();}}last=t;requestAnimationFrame(tick);}draw();requestAnimationFrame(tick);
 })();
@@ -125,17 +142,18 @@ function tick(t){if(state==='playing'){elapsed+=Math.min(t-last,100);if(elapsed>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),canvas=$('pitch'),c=canvas.getContext('2d');
-const teams=['Sky','Rose'],fills=['#adc8d9','#d8b4bd'];let active=false,paused=false,moving=false,finished=false,turn=0,score=[0,0],discs=[],drag=null,last=0;
+const teams=['Sky','Rose'],fills=['#adc8d9','#d8b4bd'];let computer=false,cpuReadyAt=0,simulation=false,simGoal=null;
+let active=false,paused=false,moving=false,finished=false,turn=0,score=[0,0],discs=[],drag=null,last=0;
 function arrange(){discs=[{x:300,y:400,r:12,team:-1},...[[170,540],[430,540],[300,660]].map(([x,y])=>({x,y,r:25,team:0})),...[[170,260],[430,260],[300,140]].map(([x,y])=>({x,y,r:25,team:1}))].map(p=>({...p,vx:0,vy:0}));moving=false;drag=null;}
-function message(text){$('football-message').textContent=text||`${teams[turn]}’s turn · Shoot towards the ${turn===0?'top':'bottom'} goal`;}
-function reset(){score=[0,0];turn=0;finished=false;paused=false;arrange();$('sky-score').textContent='0';$('rose-score').textContent='0';$('football-pause').textContent='Pause';message();draw();}
+function message(text){if(simulation)return;$('football-message').textContent=text||(computer&&turn===1?'Computer’s turn · Rose shoots towards the bottom goal':null)||`${teams[turn]}’s turn · Shoot towards the ${turn===0?'top':'bottom'} goal`;}
+function reset(){cpuReadyAt=0;score=[0,0];turn=0;finished=false;paused=false;arrange();$('sky-score').textContent='0';$('rose-score').textContent='0';$('football-pause').textContent='Pause';message();draw();}
 function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*800/r.height};}
 function cancel(){drag=null;draw();}
-canvas.addEventListener('pointerdown',e=>{if(!active||paused||moving||finished)return;const p=point(e);const index=discs.findIndex(d=>d.team===turn&&Math.hypot(d.x-p.x,d.y-p.y)<d.r+12);if(index<0)return;canvas.setPointerCapture(e.pointerId);drag={index,x:p.x,y:p.y,id:e.pointerId};draw();});
+canvas.addEventListener('pointerdown',e=>{if(!active||paused||moving||finished||(computer&&turn===1))return;const p=point(e);const index=discs.findIndex(d=>d.team===turn&&Math.hypot(d.x-p.x,d.y-p.y)<d.r+12);if(index<0)return;canvas.setPointerCapture(e.pointerId);drag={index,x:p.x,y:p.y,id:e.pointerId};draw();});
 canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;Object.assign(drag,point(e));draw();});
 canvas.addEventListener('pointerup',e=>{if(!drag||drag.id!==e.pointerId)return;const d=discs[drag.index],p=point(e),dx=d.x-p.x,dy=d.y-p.y,length=Math.hypot(dx,dy);drag=null;if(length<6){draw();return;}const power=Math.min(14,length*.13);d.vx=dx/length*power;d.vy=dy/length*power;moving=true;document.dispatchEvent(new Event('arcade-play'));message('Let’s see where it goes…');draw();});
 canvas.addEventListener('pointercancel',cancel);canvas.addEventListener('lostpointercapture',cancel);
-function goal(team){score[team]++;$('sky-score').textContent=score[0];$('rose-score').textContent=score[1];turn=1-team;arrange();if(score[team]>=3){finished=true;message(`${teams[team]} wins! Lovely playing, both of you.`);}else message(`A goal for ${teams[team]}! ${teams[turn]}’s turn.`);}
+function goal(team){if(simulation){simGoal=team;moving=false;return;}score[team]++;$('sky-score').textContent=score[0];$('rose-score').textContent=score[1];turn=1-team;arrange();if(score[team]>=3){finished=true;message(`${teams[team]} wins! Lovely playing, both of you.`);}else message(`A goal for ${teams[team]}! ${teams[turn]}’s turn.`);}
 function step(dt){for(const d of discs){d.x+=d.vx*dt;d.y+=d.vy*dt;const f=Math.pow(.976,dt);d.vx*=f;d.vy*=f;if(d.x<20+d.r){d.x=20+d.r;d.vx=Math.abs(d.vx)*.8;}if(d.x>580-d.r){d.x=580-d.r;d.vx=-Math.abs(d.vx)*.8;}const goalLane=d.team===-1&&d.x>230&&d.x<370;if(goalLane&&(d.y<15||d.y>785)){goal(d.y<15?0:1);return;}if(!goalLane){if(d.y<35+d.r){d.y=35+d.r;d.vy=Math.abs(d.vy)*.8;}if(d.y>765-d.r){d.y=765-d.r;d.vy=-Math.abs(d.vy)*.8;}}}
 for(let i=0;i<discs.length;i++)for(let j=i+1;j<discs.length;j++){const a=discs[i],b=discs[j],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy),min=a.r+b.r;if(length>=min)continue;const nx=length?dx/length:1,ny=length?dy/length:0,overlap=min-length;a.x-=nx*overlap/2;a.y-=ny*overlap/2;b.x+=nx*overlap/2;b.y+=ny*overlap/2;const velocity=(a.vx-b.vx)*nx+(a.vy-b.vy)*ny;if(velocity>0){const ma=a.team===-1?1:2,mb=b.team===-1?1:2,impulse=1.85*velocity/(1/ma+1/mb);a.vx-=impulse/ma*nx;a.vy-=impulse/ma*ny;b.vx+=impulse/mb*nx;b.vy+=impulse/mb*ny;}}
 if(discs.every(d=>Math.hypot(d.vx,d.vy)<.13)){discs.forEach(d=>{d.vx=0;d.vy=0;});moving=false;turn=1-turn;message();}}
@@ -147,8 +165,24 @@ $('football-reset').addEventListener('click',reset);$('football-pause').addEvent
 function pause(){if(active){paused=true;drag=null;$('football-pause').textContent='Keep playing';draw();}}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});window.addEventListener('blur',pause);
 document.addEventListener('arcade-mode',e=>{active=e.detail==='football';if(!active)drag=null;last=performance.now();draw();});
-function tick(t){const dt=Math.min((t-last)/16.667,2);last=t;if(active&&!paused&&moving){step(dt);draw();}requestAnimationFrame(tick);}reset();requestAnimationFrame(tick);
+
+function setOpponent(value){if(computer===value)return;computer=value;$('football-computer').setAttribute('aria-pressed',computer);$('football-together').setAttribute('aria-pressed',!computer);reset();if(computer)message('Your turn, Jonah · Sky shoots towards the top goal');}
+$('football-together').addEventListener('click',()=>setOpponent(false));$('football-computer').addEventListener('click',()=>setOpponent(true));
+// Try a small set of legal flicks using the same physics as the human player.
+function computerShot(){if(!active||paused||moving||finished||!computer||turn!==1)return;const original=discs,oldTurn=turn,oldMoving=moving;let best=null;simulation=true;try{for(let i=1;i<original.length;i++){if(original[i].team!==1)continue;const aim=Math.atan2(original[0].y-original[i].y,original[0].x-original[i].x);for(const offset of [-.18,0,.18])for(const power of [8,11,14]){discs=original.map(d=>({...d}));turn=oldTurn;moving=true;simGoal=null;const vx=Math.cos(aim+offset)*power,vy=Math.sin(aim+offset)*power;discs[i].vx=vx;discs[i].vy=vy;for(let n=0;n<300&&moving;n++)step(1);const ball=discs[0];const value=simGoal===1?10000:simGoal===0?-10000:ball.y-Math.abs(ball.x-300)*.6-Math.min(...discs.filter(d=>d.team===1).map(d=>Math.hypot(d.x-ball.x,d.y-ball.y)))*.08;if(!best||value>best.value)best={i,vx,vy,value};}}}finally{simulation=false;discs=original;turn=oldTurn;moving=oldMoving;simGoal=null;}if(best){discs[best.i].vx=best.vx;discs[best.i].vy=best.vy;moving=true;message('Rose takes a little flick…');draw();}}
+function computerTurn(t){if(active&&!paused&&!moving&&!finished&&computer&&turn===1){if(!cpuReadyAt)cpuReadyAt=t+1100;else if(t>=cpuReadyAt){cpuReadyAt=0;computerShot();}}else cpuReadyAt=0;}
+
+function tick(t){const dt=Math.min((t-last)/16.667,2);last=t;if(active&&!paused&&moving){step(dt);draw();}computerTurn(t);requestAnimationFrame(tick);}reset();requestAnimationFrame(tick);
 })();
+
+</script>
+<script>
+(()=>{'use strict';const $=id=>document.getElementById(id),colors=['#b0cabc','#b7cddd','#d7b9c5'],names=['green circle','blue square','pink triangle'],marks=['●','■','▲'];let selected=0,target=[],answer=[],completed=0,won=false;
+function cell(parent,color,index,interactive){const node=document.createElement(interactive?'button':'div');node.className='pattern-cell';node.style.background=color===null?'#e9ece3':colors[color];node.textContent=color===null?'':marks[color];node.setAttribute('aria-label',`Row ${Math.floor(index/3)+1}, column ${index%3+1}: ${color===null?'empty':names[color]}`);if(interactive){node.disabled=won;node.addEventListener('click',()=>{document.dispatchEvent(new Event('arcade-play'));answer[index]=selected;if(answer.every((v,i)=>v===target[i])){won=true;completed++;$('pattern-count').textContent=`${completed} ${completed===1?'pattern':'patterns'} made`;$('pattern-message').textContent='You made a matching pattern!';$('pattern-next').hidden=false;}render();});}parent.append(node);}
+function render(){$('pattern-target').replaceChildren();$('pattern-answer').replaceChildren();target.forEach((v,i)=>cell($('pattern-target'),v,i,false));answer.forEach((v,i)=>cell($('pattern-answer'),v,i,true));$('pattern-clear').disabled=won;}
+function fresh(){const patterns=[[0,1,0,1,0,1,0,1,0],[0,0,0,1,1,1,2,2,2],[0,1,2,0,1,2,0,1,2],[0,0,0,0,1,0,0,0,0],[0,1,0,1,2,1,0,1,0],[0,1,2,1,2,0,2,0,1]];const offset=Math.floor(Math.random()*3);target=patterns[completed%patterns.length].map(v=>(v+offset)%3);answer=Array(9).fill(null);won=false;$('pattern-next').hidden=true;$('pattern-message').textContent='Pick a colour, then tap a square.';render();}
+colors.forEach((color,i)=>{const button=document.createElement('button');button.style.background=color;button.innerHTML=`<span aria-hidden="true">${marks[i]}</span> ${names[i].split(' ')[0]}`;button.setAttribute('aria-label',names[i]);button.setAttribute('aria-pressed',i===selected);button.addEventListener('click',()=>{selected=i;Array.from($('pattern-palette').children).forEach((b,n)=>b.setAttribute('aria-pressed',i===n));});$('pattern-palette').append(button);});
+$('pattern-next').addEventListener('click',fresh);$('pattern-clear').addEventListener('click',()=>{answer=Array(9).fill(null);render();});fresh();})();
 
 </script>
 </body>
